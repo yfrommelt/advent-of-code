@@ -1,49 +1,15 @@
 import input from './input.txt'
-
-const almanacs: Record<string, Almanac> = {}
+import {type Almanac, type Almanacs, parseInput} from "./shared.ts";
 
 console.log(solve(input))
 
 export function solve(input: string): number {
-    let seeds: number[] = []
-    let almanacKey: string = ''
-    input.split(/\r?\n/).forEach(line => {
-        if (line.length < 2) {
-            return
-        }
+    const {seeds, almanacs} = parseInput(input)
 
-        if (line.includes(':')) {
-            const [title, s] = line.split(':')
-            if (title === 'seeds') {
-                seeds = s.trim().split(' ').map(Number)
-            }
-            if (title.includes('map')) {
-                almanacKey = title.split(' ').at(0) ?? ''
-                almanacs[almanacKey] = []
-            }
-            return
-        }
-
-        const correspondance = line.split(' ')
-        almanacs[almanacKey].push({
-            destinationStart: Number(correspondance.at(0)),
-            sourceStart: Number(correspondance.at(1)),
-            range: Number(correspondance.at(2)),
-        })
-    })
-
-    return Math.min(...seeds.map(getSeedLocation))
+    return Math.min(...seeds.map((seed) => getLocation(seed, almanacs)))
 }
 
-type Almanac = Correspondance[]
-
-type Correspondance = {
-    destinationStart: number
-    sourceStart: number
-    range: number
-}
-
-function getSeedLocation(seed: number): number {
+function getLocation(seed: number, almanacs: Almanacs): number {
     let lastDestination: number = seed
     Object.values(almanacs).forEach(almanac => {
         lastDestination = getDestination(lastDestination, almanac)
