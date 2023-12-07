@@ -11,18 +11,20 @@ export function solve(input: string): number {
 function parseHand(line: string): Hand {
     const [cards, bid] = line.split(' ')
     const values = cards.split('').map(getCardValue)
+    const jokers = cards.length - values.filter(Boolean).length
     return {
         raw: cards,
         cards: values,
+        jokers,
         bid: Number(bid),
-        multiplier: getHandMultiplier(values)
+        multiplier: getHandMultiplier(values, jokers)
     } as Hand
 }
 
 function getCardValue(card: string): number {
     const CARD_SCORE: Record<string, number> = {
+        'J': 0,
         'T': 10,
-        'J': 11,
         'Q': 12,
         'K': 13,
         'A': 14,
@@ -31,24 +33,24 @@ function getCardValue(card: string): number {
     return CARD_SCORE?.[card] ?? Number(card)
 }
 
-function getHandMultiplier(cards: number[]): number {
-    const distribution = Object.values(cards.reduce((distribution, card) => {
+function getHandMultiplier(cards: number[], jokers: number): number {
+    const distribution = Object.values(cards.filter(Boolean).reduce((distribution, card) => {
         distribution?.[card] ? distribution[card]++ : distribution[card] = 1
         return distribution
-    }, {} as Record<number, number>))
+    }, {} as Record<number, number>)).sort().reverse()
 
     // Five of a kind
-    if (distribution.includes(5)) return 7
+    if (distribution[0] + jokers === 5 || jokers === 5) return 7
     // Four of a kind
-    if (distribution.includes(4)) return 6
+    if (distribution[0] + jokers === 4) return 6
     // Full house
-    if (distribution.includes(3) && distribution.includes(2)) return 5
+    if (distribution[0] + jokers === 3 && distribution[1] === 2) return 5
     // Three of a kind
-    if (distribution.includes(3)) return 4
+    if (distribution[0] + jokers === 3) return 4
     // Two pair
-    if (distribution.filter(c => c === 2).length === 2) return 3
+    if (distribution[0] + jokers === 2 && distribution[1] === 2) return 3
     // One pair
-    if (distribution.includes(2)) return 2
+    if (distribution[0] + jokers === 2) return 2
     // High card
     return 1
 }
