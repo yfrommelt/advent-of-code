@@ -1,11 +1,16 @@
 {
   "name": "advent-of-code",
-  "module": "index.ts",
-  "type": "module",
   "devDependencies": {
-    "bun-types": "latest"
+    "bun-types": "latest",
+    "prettier": "^3.1.0"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
-  }
+  },
+  "scripts": {
+    "run": "bun run",
+    "test": "bun test",
+    "pertty": "prettier src --write"
+  },
+  "type": "module"
 }

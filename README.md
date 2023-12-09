@@ -1,4 +1,3 @@
-
 # advent-of-code
 
 To install dependencies:
@@ -10,7 +9,11 @@ bun install
 To run:
 
 ```bash
-bun run index.ts
+bun run src/2023/01/p1.ts
 ```
 
-This project was created using `bun init` in bun v1.0.14. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
+To test:
+
+```bash
+bun test src/2023/01/p1
+```
