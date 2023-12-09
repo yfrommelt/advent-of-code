@@ -14,9 +14,10 @@ function solveLine(line: string): number {
     // going up
     datasets[depth].push(0)
     while (depth > 0) {
-        datasets[depth - 1].push((datasets[depth - 1].at(-1) ?? 0) + (datasets[depth].at(-1) ?? 0))
+        datasets[depth - 1].unshift((datasets[depth - 1].at(0) ?? 0) - (datasets[depth].at(0) ?? 0))
         depth--
     }
 
-    return datasets[depth].at(-1) ?? 0
+    return datasets[depth].at(0) ?? 0
 }
+
