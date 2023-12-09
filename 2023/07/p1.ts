@@ -1,7 +1,10 @@
 import input from './input.txt'
 import {type Hand, sortHands} from "./shared.ts";
+import {isMainTest} from "../../utils/bun.ts";
 
-console.log(solve(input))
+if (!isMainTest()) {
+    console.log(solve(input))
+}
 
 export function solve(input: string): number {
     const hands = input.split(/\r?\n/).map(parseHand).sort(sortHands);

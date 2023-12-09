@@ -1,7 +1,10 @@
 import input from './input.txt'
 import {Almanac, Almanacs, parseInput} from "./shared.ts";
+import {isMainTest} from "../../utils/bun.ts";
 
-console.log(solve(input))
+if (!isMainTest()) {
+    console.log(solve(input))
+}
 
 type SeedRange = {
     from: number

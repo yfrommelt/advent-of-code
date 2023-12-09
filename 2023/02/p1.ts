@@ -1,4 +1,5 @@
 import input from './input.txt'
+import {isMainTest} from "../../utils/bun.ts";
 
 const MAX_AVAILABLE = {
     red: 12,
@@ -6,7 +7,9 @@ const MAX_AVAILABLE = {
     blue: 14
 }
 
-console.log(solve(input))
+if (!isMainTest()) {
+    console.log(solve(input))
+}
 
 export function solve(input: string): number {
     return input.split(/\r?\n/).map(parseGame).reduce((sum, game) => sum + (game.isPossible ? game.id : 0), 0)

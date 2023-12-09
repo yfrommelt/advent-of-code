@@ -1,8 +1,10 @@
 import input from './input.txt'
 import {type Col, getPartIdx, getSurroundNumbers, type Grid} from "./shared.ts";
+import {isMainTest} from "../../utils/bun.ts";
 
-console.log(solve(input))
-
+if (!isMainTest()) {
+    console.log(solve(input))
+}
 export function solve(input: string): number {
     const grid = parseGrid(input)
     const partsNumbers = getPartsNumbers(grid)
