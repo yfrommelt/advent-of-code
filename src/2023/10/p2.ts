@@ -1,6 +1,6 @@
 import input from './input.txt'
 import { isMainTest } from '../../utils/bun.ts'
-import { parseMap, type Point, type Polygon, solveMaze } from "./shared.ts";
+import { parseMap, type Point, type Polygon, solveMaze } from './shared.ts'
 
 if (!isMainTest()) {
     console.log(solve(input))
@@ -31,12 +31,12 @@ export function pointInPolygon(polygon: Polygon, point: Point): boolean {
     for (let i = 0, j = polygon.length - 1; i < polygon.length; i++) {
         //If a line from the point into infinity crosses this edge
         if (
-          polygon[i][1] > point[1] !== polygon[j][1] > point[1] && // One point needs to be above, one below our y coordinate
-          // ...and the edge doesn't cross our Y corrdinate before our x coordinate (but between our x coordinate and infinity)
-          point[0] <
-          ((polygon[j][0] - polygon[i][0]) * (point[1] - polygon[i][1])) /
-          (polygon[j][1] - polygon[i][1]) +
-          polygon[i][0]
+            polygon[i][1] > point[1] !== polygon[j][1] > point[1] && // One point needs to be above, one below our y coordinate
+            // ...and the edge doesn't cross our Y corrdinate before our x coordinate (but between our x coordinate and infinity)
+            point[0] <
+                ((polygon[j][0] - polygon[i][0]) * (point[1] - polygon[i][1])) /
+                    (polygon[j][1] - polygon[i][1]) +
+                    polygon[i][0]
         ) {
             // Invert odd
             odd = !odd

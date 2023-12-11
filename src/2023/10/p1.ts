@@ -1,6 +1,6 @@
 import input from './input.txt'
 import { isMainTest } from '../../utils/bun.ts'
-import { parseMap, solveMaze } from "./shared.ts";
+import { parseMap, solveMaze } from './shared.ts'
 
 if (!isMainTest()) {
     console.log(solve(input))
