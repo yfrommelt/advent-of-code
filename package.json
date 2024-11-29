@@ -10,7 +10,7 @@
   "scripts": {
     "run": "bun run",
     "test": "bun test",
-    "pertty": "prettier src --write"
+    "pretty": "prettier src --write"
   },
   "type": "module"
 }
