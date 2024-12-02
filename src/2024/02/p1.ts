@@ -1,5 +1,6 @@
 import input from "./input.txt";
 import { isMainTest } from "../../utils/bun.ts";
+import { isLevelDiffUnsafe } from "./shared.ts";
 
 if (!isMainTest()) {
     console.log(solve(input));
@@ -13,20 +14,27 @@ export function solve(input: string): number {
         .length;
 }
 
-function isSafe(report: number[]): boolean {
+export function isSafe(report: number[]): boolean {
     if (report.length < 2) {
         return true;
     }
 
-    const dir = report[0] - report[1] > 0 ? -1 : 1;
+    const dir = Math.sign(report[1] - report[0]);
     let previous = report[0];
+    let extraLife = 1;
 
     const isUnsafe = report.some((level, i) => {
         if (i === 0) {
             return false;
         }
 
-        if (level - previous > 3 * dir) {
+        if (isLevelDiffUnsafe(level, previous, dir)) {
+            if (extraLife > 0) {
+                extraLife--;
+                previous = level;
+                return false;
+            }
+
             return true;
         }
 
