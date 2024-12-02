@@ -21,7 +21,6 @@ export function isSafe(report: number[]): boolean {
 
     const dir = Math.sign(report[1] - report[0]);
     let previous = report[0];
-    let extraLife = 1;
 
     const isUnsafe = report.some((level, i) => {
         if (i === 0) {
@@ -29,12 +28,6 @@ export function isSafe(report: number[]): boolean {
         }
 
         if (isLevelDiffUnsafe(level, previous, dir)) {
-            if (extraLife > 0) {
-                extraLife--;
-                previous = level;
-                return false;
-            }
-
             return true;
         }
 
