@@ -6,13 +6,6 @@ if (!isMainTest()) {
 }
 
 export function solve(input: string): number {
-    return input
-        .split(/\r?\n/)
-        .map(getRowSum)
-        .reduce((sum, val) => sum + val, 0);
-}
-
-function getRowSum(input: string): number {
     const matches = input.matchAll(/mul\((\d+),(\d+)\)/g);
 
     let sum = 0;

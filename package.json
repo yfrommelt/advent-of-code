@@ -12,5 +12,8 @@
     "test": "bun test",
     "pretty": "prettier src --write"
   },
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "lodash": "^4.17.21"
+  }
 }
