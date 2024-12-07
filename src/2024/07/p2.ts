@@ -8,7 +8,7 @@ if (!isMainTest()) {
 
 export function solve(input: string): number {
     return input.split(/\r?\n/)
-        .map(resultIfValid)
+        .map((row) => resultIfValid(row, 3))
         .reduce((sum, val) => sum + val, 0);
 }
 
