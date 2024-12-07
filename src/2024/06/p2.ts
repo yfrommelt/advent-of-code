@@ -7,43 +7,49 @@ if (!isMainTest()) {
 }
 
 export function solve(input: string): number {
-    let startingPosition: [number, number] = [0, 0];
-    let startingDirection = Direction.UP;
+    let currentPosition: [number, number] = [0, 0];
+    let currentDirection = Direction.UP;
 
     const map: LabMap = input
         .split(/\r?\n/)
         .map((row: string, x) => row.split("").map((cell: string, y) => {
             if (![".", "#"].includes(cell)) {
-                startingPosition = [x, y];
+                currentPosition = [x, y];
             }
 
             return cell;
         }));
 
-    let currentPosition = startingPosition;
-    let currentDirection: Direction = startingDirection;
-
-    let existed = false;
-    const visited = new Map<string, Direction>();
-    visited.set(currentPosition.join("-"), currentDirection);
-    const blocked = new Set<string>();
-
-    while (!existed) {
-        try {
-            currentPosition = move(currentPosition, currentDirection, map);
-            if (visited.has(currentPosition.join("-")) &&
-                visited.get(currentPosition.join("-")) === turn(currentDirection)) {
-                const blockPosition = move(currentPosition, currentDirection, map);
-
-                if (!blocked.has(blockPosition.join("-"))) {
-                    blocked.add(blockPosition.join("-"));
-
-                    // restart
-                    currentPosition = startingPosition;
-                    currentDirection = startingDirection;
+    let blocked = 0;
+    map.forEach((row, x) => {
+        row.forEach((cell, y) => {
+            if (cell === ".") {
+                const blockedHypothetical = JSON.parse(JSON.stringify(map));
+                blockedHypothetical[x][y] = "#";
+                const existed = bruteForce(blockedHypothetical, currentPosition, currentDirection);
+                if (!existed) {
+                    blocked++;
                 }
             }
-            visited.set(currentPosition.join("-"), currentDirection);
+        });
+    });
+
+    return blocked;
+
+}
+
+function bruteForce(map: LabMap, currentPosition: [number, number], currentDirection: Direction): boolean {
+    let existed = false;
+    const mapSize = map.length * map[0].length;
+    let sample = mapSize * 2;
+
+    while (!existed) {
+        if (sample === 0) {
+            break;
+        }
+
+        try {
+            currentPosition = move(currentPosition, currentDirection, map);
         } catch (e: unknown) {
             if (e instanceof Error) {
                 if (e.message === InvalidMove.EXITED) {
@@ -55,7 +61,9 @@ export function solve(input: string): number {
                 }
             }
         }
+
+        sample--;
     }
 
-    return blocked.size;
+    return existed;
 }
